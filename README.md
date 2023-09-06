@@ -23,3 +23,7 @@ Now what you need to modify is the jz, you need to transform it to a JMP
 Since they are checking in this exact same function if there are debugger present, you can use that to actually find this function. 
 
 ![JzCheck](img/2.png)
+
+## Credits
+
+https://github.com/ferib/PacketTracerRecovery @ferib
