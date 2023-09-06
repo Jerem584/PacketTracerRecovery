@@ -1,11 +1,48 @@
 #include <Windows.h>
 #include <iostream>
+#include <TlHelp32.h>
+
+HWND cisco_hwnd = 0;
+BOOL __stdcall enum_window_cb(HWND hwnd, LPARAM lParam)
+{
+	DWORD pid;
+	GetWindowThreadProcessId(hwnd, &pid);
+	if (pid == *((DWORD*)lParam))
+	{
+		cisco_hwnd = hwnd;
+		return 0;
+	}
+	return 1;
+}
+
+HWND find_cisco_hwnd()
+{
+	auto hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+	PROCESSENTRY32 pe32{};
+	pe32.dwSize = sizeof(PROCESSENTRY32);
+	auto hProc = Process32First(hSnap, &pe32);
+	while (hProc)
+	{
+		if (strcmp(pe32.szExeFile, "PacketTracer.exe") == 0)
+		{
+			CloseHandle(hSnap);
+			HWND result = 0;
+			EnumWindows(enum_window_cb, (LPARAM)&pe32.th32ProcessID);
+			return cisco_hwnd;
+		}
+		hProc = Process32Next(hSnap, &pe32);
+	}
+	CloseHandle(hSnap);
+	return 0;
+}
+
 
 int main()
 {
 	printf("[+] Packet tracer no password (Tested on 8.2.1)\n\n");
 	
-	auto hwnd = FindWindowA(0, "PacketTracer");
+	auto hwnd = find_cisco_hwnd();
 	if (!hwnd)
 	{
 		printf("[-] Failed to find PacketTracer (Run this tool on the main menu of packet tracer)\n");
