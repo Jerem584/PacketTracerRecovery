@@ -6,6 +6,12 @@ Make sure to put dll and exe in the same directory
 
 once patched, packet tracer won't ask you for any password
 
+## How to use 
+
+Open packet tracer and wait on main menu
+
+Compile or download a release, then run the injector. 
+
 ## How could I update it
 
 ### String XREF

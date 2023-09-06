@@ -8,7 +8,7 @@ int main()
 	auto hwnd = FindWindowA(0, "PacketTracer");
 	if (!hwnd)
 	{
-		printf("[-] Failed to find PacketTracer\n");
+		printf("[-] Failed to find PacketTracer (Run this tool on the main menu of packet tracer)\n");
 		system("pause");
 		exit(-1);
 	}
