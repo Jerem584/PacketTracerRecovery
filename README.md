@@ -12,6 +12,10 @@ Open packet tracer and wait on main menu
 
 Compile or download a release, then run the injector. 
 
+## how it works
+
+patching a jump with its opposite if(a) becomes if(!a), bypassing the marker "doesHavePassword" on the file. thus not even asking for pass 
+
 ## How could I update it
 
 ### String XREF
