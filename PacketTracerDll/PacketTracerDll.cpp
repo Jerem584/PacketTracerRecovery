@@ -64,16 +64,16 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	{
 		auto jz_addr = SigScan(GetModuleHandle(0), "0F 84 9B 13 00 00"); // 0f 84 9b 13 00 00       jz     addr
 		if (!jz_addr)
+			jz_addr = SigScan(GetModuleHandle(0), "0F 84 1B 1E 00 00");
+		if (!jz_addr)
 			exit(-1);
 
 		DWORD old;
 		if (!VirtualProtect(jz_addr, 0x8, PAGE_EXECUTE_READWRITE, &old))
 			exit(-2);
 
-		*(char*)(jz_addr) = 0xE9;
-		*(char*)(jz_addr + 1) = 0x9C;
-		*(char*)(jz_addr + 2) = 0x13;
-		*(char*)(jz_addr + 3) = 0; // jmp addr
+		*(char*)(jz_addr) = 0x90; // nop
+		*(char*)(jz_addr + 1) = 0xe9;
 
 
 		VirtualProtect(jz_addr, 0x8, old, &old);
