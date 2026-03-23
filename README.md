@@ -1,6 +1,6 @@
 # Packet tracer recovery
 
-Only tested on 8.2.1 
+Only tested on 8.2.1 & 8.2.2, tested on 9
 
 Make sure to put dll and exe in the same directory
 
@@ -11,6 +11,10 @@ once patched, packet tracer won't ask you for any password
 Open packet tracer and wait on main menu
 
 Compile or download a release, then run the injector. 
+
+## how it works
+
+patching a jump with its opposite if(a) becomes if(!a), bypassing the marker "doesHavePassword" on the file. thus not even asking for pass 
 
 ## How could I update it
 
