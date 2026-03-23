@@ -1,11 +1,13 @@
 #include <Windows.h>
 #include <iostream>
 #include <vector>
+#include <cstdint> // uint type def fix @Chakhna
+#include <cstring> // strlen fix @Chakhna
 
 
 extern "C" __declspec(dllexport) int WindowHook(int code, WPARAM wParam, LPARAM lParam) { return CallNextHookEx(NULL, code, wParam, lParam); }
 
-uint8_t* SigScan(const HMODULE module, const std::string& byte_array, int skip = 0) {
+unsigned char* SigScan(const HMODULE module, const std::string& byte_array, int skip = 0) {
 	if (!module)
 		return nullptr;
 
@@ -32,11 +34,11 @@ uint8_t* SigScan(const HMODULE module, const std::string& byte_array, int skip =
 
 	const auto dos_header = reinterpret_cast<PIMAGE_DOS_HEADER>(module);
 	const auto nt_headers =
-		reinterpret_cast<PIMAGE_NT_HEADERS>(reinterpret_cast<std::uint8_t*>(module) + dos_header->e_lfanew);
+		reinterpret_cast<PIMAGE_NT_HEADERS>(reinterpret_cast<unsigned char*>(module) + dos_header->e_lfanew);
 
 	const auto size_of_image = nt_headers->OptionalHeader.SizeOfImage;
 	const auto pattern_bytes = pattern_to_byte(byte_array.c_str());
-	const auto scan_bytes = reinterpret_cast<std::uint8_t*>(module);
+	const auto scan_bytes = reinterpret_cast<unsigned char*>(module);
 
 	const auto pattern_size = pattern_bytes.size();
 	const auto pattern_data = pattern_bytes.data();
