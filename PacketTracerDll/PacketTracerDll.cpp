@@ -68,6 +68,10 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		if (!jz_addr)
 			jz_addr = SigScan(GetModuleHandle(0), "0F 84 1B 1E 00 00");
 		if (!jz_addr)
+		{
+			jz_addr = SigScan(GetModuleHandle(0), "0F 85 BD 13 00 00"); 
+		}
+		if (!jz_addr)
 			exit(-1);
 
 		DWORD old;
@@ -76,6 +80,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 
 		*(char*)(jz_addr) = 0x90; // nop
 		*(char*)(jz_addr + 1) = 0xe9;
+
 
 
 		VirtualProtect(jz_addr, 0x8, old, &old);
